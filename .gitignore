@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+runs/
+.DS_Store
+
+# 内部材料与本地实验：不发布
+PRD.md
+demos/
+example-email.json
+jev.mjs
+typesafe.mjs
