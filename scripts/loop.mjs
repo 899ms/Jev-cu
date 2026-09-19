@@ -72,7 +72,7 @@ const CLICKABLE_ROLES = new Set([
 /** 把 AX 文本解析成元素列表：{index, role, label, depth, raw} */
 export function parseAX(axText) {
   const out = [];
-  for (const line of String(axText ?? "").split("\n")) {
+  for (const line of String(axText ?? "").split(/\r?\n/)) {
     const m = line.match(/^(\s*)(\d+)\s+(.*)$/);
     if (!m) continue;
     const depth = m[1].replace(/\t/g, "    ").length;
@@ -131,7 +131,7 @@ export function selectCandidates(elements, goal = "", { max = 40 } = {}) {
  */
 export function buildContext(axText, { maxTextLines = 6 } = {}) {
   const lines = String(axText ?? "")
-    .split("\n")
+    .split(/\r?\n/)
     .map((l) => l.trim())
     .filter(Boolean);
   const head = lines.slice(0, 2);

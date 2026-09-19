@@ -42,6 +42,21 @@ test("parseAX 解析索引/角色/标签", () => {
   assert.equal(field.role, "button");
 });
 
+test("parseAX 兼容 CRLF 换行（Windows 检出回归）", () => {
+  // A Windows checkout (core.autocrlf) turns the LF fixtures into CRLF. Splitting
+  // on "\n" alone leaves a trailing "\r" on every line, and because "." does not
+  // match "\r" the `(.*)$` group never closes: parseAX then returns 0 elements and
+  // every Choice question is sent with an empty criteria map (HTTP 400).
+  const crlf = CALENDAR_AX.replace(/\n/g, "\r\n");
+  const els = parseAX(crlf);
+  assert.equal(els.length, parseAX(CALENDAR_AX).length, "CRLF 与 LF 必须解析出同样多的元素");
+  assert.ok(els.length > 0, "CRLF 文本也必须解析出元素");
+  const prev = els.find((e) => e.index === 56);
+  assert.equal(prev?.role, "button");
+  assert.equal(prev?.label, "previous month");
+  assert.ok(buildContext(crlf).includes("September"), "buildContext 也必须能在 CRLF 文本里读到状态行");
+});
+
 test("selectCandidates 不会把目标按钮挤出候选集（P0 实测回归）", () => {
   const els = parseAX(CALENDAR_AX);
   const candidates = selectCandidates(els, "switch the calendar to the previous month", { max: 40 });
