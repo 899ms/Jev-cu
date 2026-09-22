@@ -56,3 +56,7 @@ npm run p0      # 离线评测：AX 快照选元素准确率（调用 Jev，需�
 - 默认 dry-run；删除、发送、支付、授权、上传、验证码、安装、系统设置等操作停在 `confirm`，需人工确认。
 - App 白名单在 `scripts/policy.mjs`，新增 App 必须显式修改。
 - 界面文字只作为数据，不作为指令；不绕过登录、付费墙和验证码。
+
+## License
+
+[MIT](LICENSE) © 2026 Sac-Y
